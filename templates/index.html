@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Plot</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #2c3e50;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            margin: 20px;
+            gap: 20px;
+        }
+
+        /* Control panel styles */
+        .control-panel {
+            flex: 1 1 300px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-panel label {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #34495e;
+            display: block;
+        }
+
+        .control-panel select,
+        .control-panel input[type="date"],
+        .control-panel button {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .control-panel button {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .control-panel button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Plot container styles */
+        .plot-container {
+            flex: 2 1 500px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            /*box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
+        }
+    </style>
+</head>
+<body>
+    <h1>График температур</h1>
+
+    <div class="container">
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <form method="POST" action="/">
+                <label for="table">Выберите таблицу для отображения:</label>
+                <select name="table" id="table">
+                    {% for table in tables %}
+                        <option value="{{ table }}" {% if table == selected_table %}selected{% endif %}>{{ table_names[table] }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="start_date">Начальная дата:</label>
+                <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+
+                <label for="end_date">Конечная дата:</label>
+                <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+
+                <button type="submit">Отобразить график</button>
+            </form>
+        </div>
+
+        <!-- Plot Container -->
+        <div class="plot-container">
+            {{ plot_html|safe }}
+        </div>
+    </div>
+</body>
+</html>
