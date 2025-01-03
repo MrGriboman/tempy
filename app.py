@@ -43,8 +43,14 @@ def home():
 
     # Query data based on date range
     if start_date and end_date:
-        query = f"SELECT * FROM {selected_table} WHERE timestamp BETWEEN %s AND %s"
+        query = f"SELECT * FROM {selected_table} WHERE TIMESTAMP BETWEEN %s AND %s"
         data = query_db(query, (start_date, end_date))
+    elif start_date:
+        query = f"SELECT * FROM {selected_table} WHERE TIMESTAMP >= %s"
+        data = query_db(query, (start_date,))
+    elif end_date:
+        query = f"SELECT * FROM {selected_table} WHERE TIMESTAMP <= %s"
+        data = query_db(query, (end_date,))
     else:
         data = query_db(f"SELECT * FROM {selected_table}")
 
